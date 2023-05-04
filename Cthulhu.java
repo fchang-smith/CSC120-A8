@@ -1,5 +1,7 @@
 import java.util.ArrayList;
-
+/**
+ * The Cthulhu calss that each instance can do grab(String item), drop(String item), examine(String item), use(String item), walk(String direction), fly(int x, int y), shrink(), grow(), rest(), and undo().
+ */
 public class Cthulhu implements Contract{
     private int xLoc;
     private int yLoc;
@@ -9,6 +11,9 @@ public class Cthulhu implements Contract{
     private String lastAction = null;
     private ArrayList<String> lastPara;
 
+    /**
+     * construct an instance of Cthulhu without giving any parameter. 
+     */
     public Cthulhu () {
         this.xLoc = 0;
         this.yLoc = 0;
