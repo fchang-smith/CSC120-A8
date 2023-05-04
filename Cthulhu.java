@@ -20,8 +20,8 @@ public class Cthulhu implements Contract{
 
     /**
      * Constructor using when the int size and int number of tenacle are given
-     * @param size
-     * @param nTenacle
+     * @param size the size of cthulhu
+     * @param nTenacle the number of tenacles of cthulhu
      */
     public Cthulhu (int size, int nTenacle) {
         this();
@@ -30,6 +30,10 @@ public class Cthulhu implements Contract{
     }
 
 
+    /**
+     * Grab a string item using tenacles. The cthulhu will not be able to grab a new thing if all tenacles are taking up by other things
+     * @param item String item that can be grabbed
+     */
     public void grab(String item) {
         if (this.storage.size() < nTenacle) {
             this.storage.add(item);
@@ -45,6 +49,10 @@ public class Cthulhu implements Contract{
         } 
     }
 
+    /**
+     * The cthulhu can drop String item
+     * @param item the String item that can be dropped
+     */
     public String drop(String item){
         if (this.storage.contains(item)) {
             this.storage.remove(item);
@@ -62,6 +70,10 @@ public class Cthulhu implements Contract{
         
     }
 
+    /**
+     * the cthulhu can examine String item, the examined item will be marked with (examined)
+     * @param item the String item that is going to be examined
+     */
     public void examine(String item){
         if (this.storage.contains(item)) {
             String exItem = item + " (examined)";
@@ -80,6 +92,10 @@ public class Cthulhu implements Contract{
         System.out.println("Examining...San Check!");    
     }
 
+    /**
+     * The cthulhu can use a String item, the used item will be marked as (used)
+     * @param item The String item that is going to be used
+     */
     public void use(String item){
         if (this.storage.contains(item)) {
             String useItem = item + " (used)";
@@ -98,6 +114,11 @@ public class Cthulhu implements Contract{
         System.out.println("Use..." + item + "!");
     }
 
+    /**
+     * The cthulhu can walk 10 units to one of four different directions each time
+     * @param direction the direction to walk to; there are four possible directions: south, north, east, and west
+     * @return boolean true if walk successfully
+     */
     public boolean walk(String direction){
         if (direction.equals("south")) {
             this.yLoc -= 10;
@@ -120,6 +141,12 @@ public class Cthulhu implements Contract{
         return true; 
     }
 
+    /**
+     * the cthulhu can fly to a location described by (x,y)
+     * @param x int x unit of x-axis
+     * @param y int y unit of y-axis
+     * @return return true if fly successfully
+     */
     public boolean fly(int x, int y){
         this.xLoc = x;
         this.yLoc = y;
@@ -131,6 +158,10 @@ public class Cthulhu implements Contract{
         return true;
     }
 
+    /**
+     * shrink and return the size after shrinking
+     * @return Number that is the size of cthulhu after shrinking
+     */
     public Number shrink() {
         if (this.storage.size() == this.nTenacle) {
             throw new RuntimeException("The storage is at its full load. Cannot reduce the number of tenacles!");
@@ -145,6 +176,10 @@ public class Cthulhu implements Contract{
         }    
     }
 
+    /**
+     * cthulhu grow 1 unit larger each time
+     * @return return the number of size after growing
+     */
     public Number grow() {
         this.size += 1;
         this.nTenacle += 1;
@@ -155,6 +190,9 @@ public class Cthulhu implements Contract{
         return this.size;
     }
 
+    /**
+     * print out a sentence that the cthulhu is resting
+     */
     public void rest(){
         this.lastAction = "rest";
         this.lastPara.clear();
@@ -162,6 +200,9 @@ public class Cthulhu implements Contract{
         System.out.println("GOOD NEWS! He's resting!");
     }
 
+    /**
+     * Undo the last action
+     */
     public void undo(){
         if (this.lastAction == null) {
             throw new RuntimeException("No action can be retrieved");
@@ -195,6 +236,9 @@ public class Cthulhu implements Contract{
         }
     }
 
+    /**
+     * undo the grab()
+     */
     private void undoGrab () {
         int idx = this.storage.size();
         this.storage.remove(idx-1);
@@ -202,6 +246,9 @@ public class Cthulhu implements Contract{
         System.out.println(this.storage);
     }
 
+    /**
+     * undo the drop()
+     */
     private void undoDrop () {
         String item = this.lastPara.get(0);
         this.storage.add(item);
@@ -209,6 +256,9 @@ public class Cthulhu implements Contract{
         System.out.println(this.storage);
     }
 
+    /**
+     * undo the examine()
+     */
     private void undoExamine () {
         String item = this.lastPara.get(0);
         String exItem = this.lastPara.get(1);
@@ -218,6 +268,9 @@ public class Cthulhu implements Contract{
         System.out.println(this.storage);
     }
 
+    /**
+     * undo the use()
+     */
     private void undoUse () {
         String item = this.lastPara.get(0);
         String useItem = this.lastPara.get(1);
@@ -227,6 +280,9 @@ public class Cthulhu implements Contract{
         System.out.println(this.storage);
     }
 
+    /**
+     * undo the walk()
+     */
     private void undoWalk () {
         String direction = this.lastPara.get(0);
         if (direction.equals("south")) {
@@ -241,6 +297,9 @@ public class Cthulhu implements Contract{
         System.out.println("Undo walk: walk 10 units to " + direction );
     }
 
+    /**
+     * undo the fly()
+     */
     private void undoFly () {
         int x = Integer.parseInt(this.lastPara.get(0));
         int y = Integer.parseInt(this.lastPara.get(1));
@@ -249,18 +308,27 @@ public class Cthulhu implements Contract{
         System.out.println("Undo fly: the location is (" + this.xLoc + "," + this.yLoc + ")");
     }
 
+    /**
+     * undo the shrink()
+     */
     private void undoShrink () {
         this.size += 1;
         this.nTenacle -= 1;
         System.out.println("Undo shrink: the size is " + this.size + "; the number of tenacles is: " + this.nTenacle);
     }
 
+    /**
+     * undo the grow()
+     */
     private void undoGrow () {
         this.size -= 1;
         this.nTenacle -= 1;
         System.out.println("Undo grow: the size is " + this.size + "; the number of tenacles is: " + this.nTenacle);
     }
 
+    /**
+     * undo the rest()
+     */
     private void undoRest () {
         System.out.println("Undo rest: The monster is waking!");
     }
